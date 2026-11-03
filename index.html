@@ -6,7 +6,7 @@
 <!-- 截图 state: disconnected, connected, selected, deselected, joined, raise, locked, sealed, vrf-long, drawing, amount-error, custom, confirm, howto, fees, result-win, result-lose, result-none, result-void, final10, feed-you, sweep, beam, burst, win-rain, lose-card, history, bet-fx, dim, reveal. v7.1: jackpot-pop, ship-turn; jackpot-strip (connected alias), jackpot-inject, jackpot-burst, jackpot-title, jackpot-count, jackpot-mine, jackpot-other, jackpot-rollover, jackpot-report, jackpot-history, verify. 参数: drawt, fxt, lockt, jpt, turnt=0|150|300|450, jp=1, rm, low, demo=win|lose|jackpot|jackpot-other|jackpot-rollover, demoWin, demoVoid. v7.2: win-confetti, jackpot-confetti; cft=毫秒（0 为起点）; demo=tour 两局录制，无入口 UI。 -->
 <!-- v5.4: ORE 双栏奖池；星区人数与投入快照；A/B/C 对称布局；SVG 品牌页头。 -->
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#08070C"><title>星火远征 · 星核大奖 v7.5</title><style>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#08070C"><title>星火远征 · 星核大奖 v7.6</title><style>
 :root {
   --night-950:#08070C;
   --night-900:var(--surface-1);
@@ -127,14 +127,18 @@
   --layout-max:520px;
   --gap-section:var(--space-16);
   --gap-map-activity:var(--space-12);
-  --gap-dock:var(--space-20);
+  --gap-dock:var(--space-12);
   --gap-action:var(--space-16);
   --gap-compliance:var(--space-16);
   --gap-nav:var(--space-16);
   --gap-inline:var(--space-8);
   --gap-label:var(--space-4);
   --height-header:44px;
-  --height-stats:52px;
+  --height-stats:74px;
+  --height-control:36px;
+  --height-ticker:32px;
+  --height-history:20px;
+  --gap-history:var(--space-12);
   --height-chip:44px;
   --height-cta:52px;
   --height-result:60px;
@@ -478,12 +482,57 @@ html,body{overflow:hidden;height:100%}
 .activity-rules{border-top:1px solid var(--border-subtle);margin-top:16px;padding-top:12px}
 .activity-rules h3{margin:0;font:600 13px/20px var(--font);color:var(--text-2)}
 .activity-rules p{font-size:12px;color:var(--text-3)}
+
+/* v7.6 · Strict mobile rhythm; existing Linear surfaces / Kraken palette. */
+.hud{margin-bottom:var(--space-12)}
+.hud-actions{gap:var(--space-8)}
+.hud .room,.hud .wallet,.hud .sound{height:var(--height-control);min-height:var(--height-control);border-radius:999px;border:1px solid var(--border-subtle);background:var(--surface-2);box-shadow:var(--inner-highlight);align-self:center}
+.hud .room,.hud .sound{width:36px;min-width:36px;flex:0 0 36px;padding:0}
+.hud .wallet{width:92px;min-width:92px;flex:0 0 92px;padding:0 12px;font-size:12px;gap:4px}
+.hud .room:after,.hud .wallet:after,.hud .sound:after{content:"";display:block;position:absolute;inset:-5px}
+.brand{gap:8px}.brand-zh{letter-spacing:0}
+.stats{padding:14px 0}.stat-cell{height:44px;min-height:44px;gap:6px}.stat-cell small{font-size:11px;line-height:14px}
+.middle{grid-template-rows:minmax(0,1fr) var(--height-ticker)}
+.map .node{--hitx:0px;--hity:0px}
+.map .node:after{inset:50% auto auto 50%;width:max(44px,100%);height:max(44px,100%);transform:translate(-50%,-50%)}
+.map .node.dim .orb{transform:none}
+.map[data-compact="true"] .caption{display:none}
+.map .lbl{width:88px!important}
+.map .micro-tag{display:none!important}
+.map .node .lbl,.map .node.sel .lbl{top:calc(100% + 6px)}
+.map .lbl b,.map .lbl em{font-size:12px}
+.chip:disabled,.chip.off{opacity:1;color:var(--text-3)}
+.cta small{opacity:1}
+.map .lbl .zone-data{opacity:1}.map .node.dim .lbl{opacity:1}
+.map .node.hit .orb{transform:scale(1.12)}
+.orbit{display:block!important;stroke:color-mix(in srgb,var(--text-1) 10%,transparent);stroke-dasharray:none}
+.activity{height:var(--height-ticker);min-height:var(--height-ticker);padding:0 0 0 12px;border:1px solid var(--border-subtle);border-radius:999px;background:color-mix(in srgb,var(--surface-1) 36%,transparent);overflow:visible}
+.activity .feed{position:relative;display:block!important;height:30px!important;min-height:30px!important;font:400 11px/30px var(--font);overflow:hidden}
+.feed-line{position:absolute;inset:0;display:flex!important;align-items:center;gap:6px;white-space:nowrap;transform:translateY(100%);opacity:0;transition:transform 360ms cubic-bezier(.2,.8,.2,1),opacity 360ms ease}
+.feed-line.is-current{transform:translateY(0);opacity:1}.feed-line.is-out{transform:translateY(-100%);opacity:0}
+.feed-line i{width:8px;height:8px;flex:0 0 8px;background:var(--feed-color,var(--text-3));border-radius:50%}
+.feed-address{color:var(--text-3);font-variant-numeric:tabular-nums}.feed-planet{color:var(--feed-color);font-weight:500}.feed-amount{color:var(--text-2);font-variant-numeric:tabular-nums}
+.activity-report{position:relative;flex:0 0 44px;width:44px;height:30px;min-height:30px;padding:0;background:none;font-size:20px}
+.activity-report:after{content:"";inset:auto 0 0;height:44px}
+.history-row{position:relative;height:var(--height-history);min-height:var(--height-history);margin-top:var(--gap-history);padding:0;gap:12px}
+.history-row:after{content:"";position:absolute;inset:-12px 0}
+.history-row .recent i{width:16px;height:16px;flex:0 0 16px;box-shadow:inset 0 0 0 1px #ffffff30,inset -3px -3px 5px #0006}
+.history-row .history-arrow{font-size:18px;color:var(--text-3)}
+.nav{margin-left:0;margin-right:0;padding-left:0;padding-right:0}
+@media(prefers-reduced-motion:reduce){.feed-line{transition:none}}
+.rm .feed-line,.shot .feed-line{transition:none}
+/* Short screens use one 16px label line; reclaim map padding, not rhythm tokens. */
+.map{padding:0}
+@media(max-height:700px){.map .node .lbl,.map .node.sel .lbl{min-height:16px;height:16px}.map .lbl .zone-data{display:none}}
+/* Compact result keeps its winner/detail; the report retains the full winners list. */
+@media(max-height:700px){.dock .result.neutral{height:64px}.result .leaders{display:none}}
+
 </style></head><body><main class="app" id="app">
 <canvas id="confetti" aria-hidden="true"></canvas><div class="stars" aria-hidden="true"></div><header class="hud"><a class="brand" href="#" aria-label="星火远征 Spark Expedition"><span class="brand-mark"><svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shape-rendering="geometricPrecision"><defs><linearGradient id="expeditionEmblem" x1="5" y1="30" x2="29" y2="4" gradientUnits="userSpaceOnUse"><stop stop-color="#678FFF"/><stop offset="1" stop-color="#A88BFF"/></linearGradient></defs><path d="M18 2 31 10v16L18 34 5 26V10Z" fill="#161326" stroke="url(#expeditionEmblem)" stroke-width="2"/><path d="m18 6 5 13 5 6-8-3-2 5-2-5-8 3 5-6Z" fill="url(#expeditionEmblem)"/><path d="m18 10 2 9-2 2-2-2Z" fill="#F3F2F7"/><path d="M5 24C-2 20 20 8 31 12" stroke="#A9A3FF" stroke-width="1.8" stroke-linecap="round"/><path d="m28 2 1.5 3.5L33 7l-3.5 1.5L28 12l-1.5-3.5L23 7l3.5-1.5Z" fill="#FFC24D"/><path d="m16 27 2 5 2-5" fill="#FFC24D"/></svg></span><span class="brand-word"><span class="brand-zh">星火远征</span></span></a><div class="hud-actions"><button class="room" id="room" aria-label="切换币种，当前 tBNB">◈</button><button class="wallet" id="wallet" aria-label="连接钱包">连接钱包</button><button class="sound" id="sound" aria-label="开启音效" aria-pressed="false"></button></div></header>
 <section class="stats" aria-label="本局数据"><button id="jpHistory" class="stat-cell jackpot-cell" aria-label="星核大奖，查看详情"><span class="stat-value"><i class="plasma" id="jpOrb" aria-hidden="true"></i><b id="jpValue"></b></span><small>星核大奖 · <span id="jpStatUnit">tBNB</span> <span aria-hidden="true">›</span></small><span id="jpMeta" hidden></span><span id="jpChip" class="jp-chip" hidden></span></button><div class="stat-cell"><span class="stat-value"><b id="poolValue">1.5200</b></span><small>本局投注 · <span id="poolUnit">tBNB</span></small></div><div class="stat-cell"><div class="timer"><svg id="timerRing" viewBox="0 0 20 20" aria-hidden="true"><circle class="track" cx="10" cy="10" r="8"/><circle class="progress" cx="10" cy="10" r="8"/></svg><b id="countdown">00:15</b></div><small id="countLabel">封盘倒计时</small></div></section>
 <section class="middle" aria-label="星图与活动">
-<section class="map layout-A" id="map" aria-label="星球地图"><i class="beam" id="beam" hidden aria-hidden="true"></i><svg class="orbit" viewBox="-100 -100 200 200" aria-hidden="true"><circle r="99" fill="none" vector-effect="non-scaling-stroke"/></svg><i class="core" aria-hidden="true"></i><i class="dim-layer" aria-hidden="true"></i><i class="radar" id="radar" aria-hidden="true"></i><div class="ship idle" id="ship" aria-hidden="true"><div class="ship-turn" id="shipTurn" style="--heading:0deg" data-angle="0"><div class="ship-drift"><svg viewBox="0 0 64 64" shape-rendering="geometricPrecision"><defs><linearGradient id="canopy" x2="1" y2="1"><stop stop-color="#C9C2FF"/><stop offset="1" stop-color="#5B5BEA"/></linearGradient><radialGradient id="engineGlow"><stop stop-color="#7B6CFF"/><stop offset="1" stop-color="#7B6CFF" stop-opacity="0"/></radialGradient><linearGradient id="exhaust" x2="0" y2="1"><stop stop-color="#EDEBFF"/><stop offset="1" stop-color="#8F7BFF" stop-opacity="0"/></linearGradient></defs><g class="engine"><ellipse cx="23" cy="54" rx="12" ry="12" fill="url(#engineGlow)"/><ellipse cx="41" cy="54" rx="12" ry="12" fill="url(#engineGlow)"/><path d="M20 51L23 65L26 51M38 51L41 65L44 51" fill="url(#exhaust)"/></g><path d="M32 2L42 28L59 48L41 44L38 53H26L23 44L5 48L22 28Z" fill="#292638" stroke="#9389B8" stroke-width=".65"/><path d="M32 3L37 31L46 43L37 40L35 50H29L27 40L18 43L27 31Z" fill="#363147" stroke="#C9C2FF" stroke-width=".55"/><path d="M32 4L22 28L5 48M32 4L42 28L59 48" fill="none" stroke="#8F7BFF" stroke-opacity=".6"/><path d="M32 15L36 31L32 36L28 31Z" fill="url(#canopy)" stroke="#C9C2FF" stroke-opacity=".4"/><path d="M32 7V13M29 30l3 3 3-3M19 40l5-3M45 40l-5-3" fill="none" stroke="#EDEBFF" stroke-width=".6" stroke-opacity=".85"/><path d="M32 38V48M14 43L24 37M50 43L40 37" stroke="#33313E"/><path d="M20 49H26V53H20ZM38 49H44V53H38Z" fill="#08070C" stroke="#33313E"/><circle cx="11" cy="44" r="1.3" fill="#8F7BFF"/><circle cx="53" cy="44" r="1.3" fill="#EDEBFF"/></svg></div></div></div><svg class="energy" id="energy" aria-hidden="true" hidden><defs><linearGradient id="ribbon"><stop stop-color="#8F7BFF" stop-opacity="0"/><stop offset="1" stop-color="#C9C2FF"/></linearGradient></defs><path class="ribbon-path" fill="url(#ribbon)"/><path class="glow-path"/><path class="core-path"/></svg><i class="map-wave" id="mapWave" aria-hidden="true"></i><div class="caption" id="caption" hidden></div><i class="core-ring" aria-hidden="true"></i><span class="core-round" id="coreRound" aria-hidden="true">#10482</span><canvas class="fx" id="fx" aria-hidden="true"></canvas><button class="skip" id="skip" hidden>跳过</button></section>
-<section class="activity" id="activity" aria-label="实时动态"><div class="feed" aria-live="off"><span id="feedLine">等待本轮入局动态</span><span id="feedAmount" hidden></span></div><button id="activityReport" class="activity-report" aria-label="查看实时动态">›</button></section></section><section class="dock" aria-label="投入与本轮结果"><div class="result" id="result" role="region" aria-label="本轮结果" hidden></div><div class="amount-wrap"><div class="amount" id="chips" aria-label="投入金额"></div><p class="amount-error" id="amountError" role="alert" hidden></p></div><div class="cta-wrap"><button class="cta" id="cta"></button><button class="estimate-info" id="estimateInfo" aria-label="查看估算说明" hidden>ⓘ</button></div><button class="history-row" id="recentHistory" aria-label="查看近期开奖"><span>近期开奖</span><span id="recent" class="recent" aria-label="最近八轮开奖"></span></button></section><nav class="nav" id="nav" aria-label="主导航"></nav>
+<section class="map layout-A" id="map" aria-label="星球地图"><i class="beam" id="beam" hidden aria-hidden="true"></i><svg class="orbit" viewBox="-100 -100 200 200" aria-hidden="true"><circle r="100" fill="none" vector-effect="non-scaling-stroke"/></svg><i class="core" aria-hidden="true"></i><i class="dim-layer" aria-hidden="true"></i><i class="radar" id="radar" aria-hidden="true"></i><div class="ship idle" id="ship" aria-hidden="true"><div class="ship-turn" id="shipTurn" style="--heading:0deg" data-angle="0"><div class="ship-drift"><svg viewBox="0 0 64 64" shape-rendering="geometricPrecision"><defs><linearGradient id="canopy" x2="1" y2="1"><stop stop-color="#C9C2FF"/><stop offset="1" stop-color="#5B5BEA"/></linearGradient><radialGradient id="engineGlow"><stop stop-color="#7B6CFF"/><stop offset="1" stop-color="#7B6CFF" stop-opacity="0"/></radialGradient><linearGradient id="exhaust" x2="0" y2="1"><stop stop-color="#EDEBFF"/><stop offset="1" stop-color="#8F7BFF" stop-opacity="0"/></linearGradient></defs><g class="engine"><ellipse cx="23" cy="54" rx="12" ry="12" fill="url(#engineGlow)"/><ellipse cx="41" cy="54" rx="12" ry="12" fill="url(#engineGlow)"/><path d="M20 51L23 65L26 51M38 51L41 65L44 51" fill="url(#exhaust)"/></g><path d="M32 2L42 28L59 48L41 44L38 53H26L23 44L5 48L22 28Z" fill="#292638" stroke="#9389B8" stroke-width=".65"/><path d="M32 3L37 31L46 43L37 40L35 50H29L27 40L18 43L27 31Z" fill="#363147" stroke="#C9C2FF" stroke-width=".55"/><path d="M32 4L22 28L5 48M32 4L42 28L59 48" fill="none" stroke="#8F7BFF" stroke-opacity=".6"/><path d="M32 15L36 31L32 36L28 31Z" fill="url(#canopy)" stroke="#C9C2FF" stroke-opacity=".4"/><path d="M32 7V13M29 30l3 3 3-3M19 40l5-3M45 40l-5-3" fill="none" stroke="#EDEBFF" stroke-width=".6" stroke-opacity=".85"/><path d="M32 38V48M14 43L24 37M50 43L40 37" stroke="#33313E"/><path d="M20 49H26V53H20ZM38 49H44V53H38Z" fill="#08070C" stroke="#33313E"/><circle cx="11" cy="44" r="1.3" fill="#8F7BFF"/><circle cx="53" cy="44" r="1.3" fill="#EDEBFF"/></svg></div></div></div><svg class="energy" id="energy" aria-hidden="true" hidden><defs><linearGradient id="ribbon"><stop stop-color="#8F7BFF" stop-opacity="0"/><stop offset="1" stop-color="#C9C2FF"/></linearGradient></defs><path class="ribbon-path" fill="url(#ribbon)"/><path class="glow-path"/><path class="core-path"/></svg><i class="map-wave" id="mapWave" aria-hidden="true"></i><div class="caption" id="caption" hidden></div><i class="core-ring" aria-hidden="true"></i><span class="core-round" id="coreRound" aria-hidden="true">#10482</span><canvas class="fx" id="fx" aria-hidden="true"></canvas><button class="skip" id="skip" hidden>跳过</button></section>
+<section class="activity" id="activity" aria-label="实时动态"><div class="feed" aria-live="off"><span id="feedLine" class="feed-line is-current">等待本轮入局动态</span><span id="feedNext" class="feed-line" aria-hidden="true"></span></div><button id="activityReport" class="activity-report" aria-label="查看实时动态">›</button></section></section><section class="dock" aria-label="投入与本轮结果"><div class="result" id="result" role="region" aria-label="本轮结果" hidden></div><div class="amount-wrap"><div class="amount" id="chips" aria-label="投入金额"></div><p class="amount-error" id="amountError" role="alert" hidden></p></div><div class="cta-wrap"><button class="cta" id="cta"></button><button class="estimate-info" id="estimateInfo" aria-label="查看估算说明" hidden>ⓘ</button></div><button class="history-row" id="recentHistory" aria-label="查看近期开奖"><span>近期开奖</span><span id="recent" class="recent" aria-label="最近六轮开奖"></span><span class="history-arrow" aria-hidden="true">›</span></button></section><nav class="nav" id="nav" aria-label="主导航"></nav>
 <div class="overlay" id="overlay" hidden><section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="handle"></div><div class="sheet-head"><h2 id="sheetTitle"></h2><button class="close" id="close" aria-label="关闭弹层">×</button></div><div id="sheetContent"></div></section></div><section id="jp" class="jp-overlay" hidden role="dialog" aria-modal="true" aria-live="polite" aria-labelledby="jpTitle" tabindex="-1"><canvas id="jpCanvas" aria-hidden="true"></canvas><i id="jpFlash" aria-hidden="true"></i><i id="jpWave" aria-hidden="true"></i><i id="jpStreak" aria-hidden="true"></i><button id="jpSkip" class="jp-skip">跳过</button><div class="jp-content"><span class="jp-eyebrow">SPARK EXPEDITION / 星核大奖</span><i class="plasma jp-orb" aria-hidden="true"></i><h1 id="jpTitle"></h1><p id="jpSubtitle" aria-live="off"></p><div class="jp-total" aria-live="off"><b id="jpAmount" aria-live="off"></b><span id="jpUnit"></span></div><p id="jpSplit" aria-live="off"></p><div id="jpPersonal" aria-live="off"></div><button class="cta" id="jpDone" hidden>继续</button><button class="jp-report-link" id="jpReport" hidden>查看星核大奖战报 ›</button></div></section><div class="toast" id="toast" role="status" hidden></div></main>
 <script>/* SparkPlanet v7.4 — 与 v5 静态模板同一套光照/边缘光/辉光公式，在 canvas 上做真实自转。
    用法：SparkPlanet.load(key, texURL).then(()=>SparkPlanet.mount(canvasBody, canvasGlow, key, {cssSize, dpr}))
@@ -668,43 +717,45 @@ function quote(p=current(),r=room){const x=Math.max(0,Number(p.amount)||0),z=p.s
 function notice(t){$('toast').textContent=t;$('toast').hidden=false;clearTimeout(noticeTimer);if(!shot)noticeTimer=setTimeout(()=>$('toast').hidden=true,2600);}
 P.forEach((k,i)=>{$('map').insertAdjacentHTML('beforeend',`<button class="node n${i}" data-i="${i}" style="--phase:-${i*1.5}s" aria-label="选择${N[i]}"><span class="orb"><i class="reveal-halo" aria-hidden="true"></i><i class="reveal-rays" aria-hidden="true"></i><span class="orb-float"><img src="${IMG[k]}" alt=""><canvas class="glow" aria-hidden="true"></canvas><canvas class="body" aria-hidden="true"></canvas></span>${RING}<i class="step-rim"></i><i class="ripple"></i><span class="hitbadge" hidden>✦ 点亮</span></span><span class="lbl"><span class="label-main"><b>${N[i]}</b><em></em><span class="micro-tag" hidden>含本次</span></span><span class="zone-data"></span></span></button>`);});
 const nodes=[...document.querySelectorAll('.node')];
-function zoneBox(v){return{x:v.points[0].x-(v.ship+16)/2,y:v.shipY-v.ship/2-3,w:v.ship+16,h:v.ship+23};}
-// v7.5: solve the entire unit envelopes against both measured axes.
+// Solve full regular-pentagon envelopes, including labels, touch areas and the ship.
+function zoneBox(v){return v.shipZone;}
 let mapLayoutKey="";
 function layoutMap(){
  const map=$('map'),bounds=map.getBoundingClientRect(),w=bounds.width,h=bounds.height;
  if(!w||!h)return;
- const caption=$('caption').hidden?0:28,available=h-caption,pad=4,gap=5;
- const key=[w,h,caption,...nodes.map(n=>n.querySelector('.lbl').textContent)].join('|');
+ const compact=h<260;map.dataset.compact=String(compact);
+ const caption=$('caption').hidden||compact?0:28,available=h-caption,pad=2,gap=4,labelGap=6;
+ const labels=nodes.map(n=>n.querySelector('.lbl').getBoundingClientRect());
+ const labelWidths=labels.map(r=>r.width),labelH=Math.max(...labels.map(r=>r.height));
+ const key=[w,h,caption,labelH,...labelWidths].join('|');
  if(key===mapLayoutKey)return;
- const labelWidths=nodes.map(n=>Math.max(n.querySelector('.label-main').getBoundingClientRect().width,n.querySelector('.zone-data').getBoundingClientRect().width)+4);
- const intersects=(a,b)=>a.x<b.x+b.w+gap&&a.x+a.w+gap>b.x&&a.y<b.y+b.h+gap&&a.y+a.h+gap>b.y;
- let solution;
- search:for(let d=Math.floor(w/2);d>=8;d--){
-  const up=d*.6+3,down=d*.6+35,unitH=up+down;
-  const widths=labelWidths.map(v=>Math.max(44,v,d*1.2+6));
-  // Keep the pentagon convex; relax its shoulder height and lower spread on short screens.
-  for(const shoulder of [-.309017,-.0954915,-.5,-.65,-.8])for(const spread of [.587785,.65,.72,.78]){
-   const rx=Math.min((w/2-pad-widths[1]/2)/.951057,(w/2-pad-widths[3]/2)/.951057,(w/2-pad-widths[2]/2)/spread,(w/2-pad-widths[4]/2)/spread);
-   const ry=(available-pad*2-unitH)/1.809017,orbitY=pad+up+ry;
-   if(rx<=0||ry<=0)continue;
-   const points=[[0,-1],[.951057,shoulder],[spread,.809017],[-.951057,shoulder],[-spread,.809017]].map(([x,y])=>({x:w/2+x*rx,y:orbitY+y*ry}));
-   const boxes=points.map((p,i)=>({x:p.x-widths[i]/2,y:p.y-up,w:widths[i],h:unitH}));
-   if(boxes.some((b,i)=>b.x<0||b.y<0||b.x+b.w>w||b.y+b.h>available+.01||boxes.some((c,j)=>j>i&&intersects(b,c))))continue;
-   const ship=Math.max(28,Math.min(58,d*.76)),half=ship/2;
-   const candidates=[available/2,...boxes.flatMap(b=>[b.y-half-20-gap,b.y+b.h+half+3+gap])].sort((a,b)=>Math.abs(a-available/2)-Math.abs(b-available/2));
-   for(const shipY of candidates){
-    const zone={x:w/2-(ship+16)/2,y:shipY-half-3,w:ship+16,h:ship+23};
-    if(zone.y<pad||zone.y+zone.h>available-pad||boxes.some(b=>intersects(b,zone)))continue;
-    solution={d,rx,ry,orbitY,shipY,ship,points,boxes,shoulder,spread};break search;
-   }
-  }
+ const angles=[-90,-18,54,126,198],vectors=angles.map(a=>({x:Math.cos(a*Math.PI/180),y:Math.sin(a*Math.PI/180)}));
+ const vertical=vectors[2].y-vectors[1].y,bottomWidth=vectors[2].x-vectors[3].x;
+ const heightSpan=1+vectors[2].y,widthSpan=2*vectors[1].x,labelW=Math.max(...labelWidths);
+ const intersects=(a,b)=>a.x<b.x+b.w+gap-.001&&a.x+a.w+gap>b.x+.001&&a.y<b.y+b.h+gap-.001&&a.y+a.h+gap>b.y+.001;
+ let v;
+ // Exact pentagon bounds; descend only diameter, choosing the largest feasible R.
+ // A 1.12× reveal reaches the fixed 6px label gap at diameter 100.
+ search:for(let d=Math.min(100,Math.floor(w)/2);d>=8;d-=.5){
+  const orbRadius=Math.max(22,d/2+1),ship=Math.max(24,Math.min(48,d*.6));
+  const maxR=Math.min((available-2*pad-2*orbRadius-labelGap-labelH)/heightSpan,(w-2*pad-Math.max(2*orbRadius,labelW))/widthSpan);
+  const minR=Math.max((2*orbRadius+labelGap+labelH+gap)/vertical,(labelW+gap)/bottomWidth,d*.95+8);
+  if(maxR<minR)continue;
+  const R=maxR,cx=w/2,cy=(available-labelGap-labelH+(1-vectors[2].y)*R)/2;
+  const points=vectors.map((q,i)=>({x:cx+q.x*R,y:cy+q.y*R,angle:angles[i]}));
+  const radius=d*.45,shipZone={x:cx-radius,y:cy-radius,w:radius*2,h:radius*2,cx,cy,r:radius};
+  const shipOverlap=(a,j)=>j===0?Math.hypot(a.x+a.w/2-cx,a.y+a.h/2-cy)<a.w/2+radius+gap:Math.hypot(Math.max(a.x-cx,0,cx-a.x-a.w),Math.max(a.y-cy,0,cy-a.y-a.h))<radius+gap;
+  const parts=points.map((p,i)=>[{x:p.x-orbRadius,y:p.y-orbRadius,w:orbRadius*2,h:orbRadius*2},{x:p.x-labelWidths[i]/2,y:p.y+d/2+labelGap,w:labelWidths[i],h:labels[i].height}]);
+  if(parts.some((unit,i)=>unit.some((a,j)=>a.x<pad-.001||a.y<pad-.001||a.x+a.w>w-pad+.001||a.y+a.h>available-pad+.001||shipOverlap(a,j)||parts.some((other,j)=>j>i&&other.some(b=>intersects(a,b))))))continue;
+  const boxes=parts.map(unit=>{const x=Math.min(...unit.map(a=>a.x)),y=Math.min(...unit.map(a=>a.y));return{x,y,w:Math.max(...unit.map(a=>a.x+a.w))-x,h:Math.max(...unit.map(a=>a.y+a.h))-y};});
+  v={d,R,cx,cy,ship,points,boxes,parts,shipZone};break search;
  }
- if(!solution)return;
- mapLayoutKey=key;
- const v=solution;for(const [key,value] of Object.entries({'--sz':v.d,'--cx':w/2,'--cy':v.shipY,'--orbit-cy':v.orbitY,'--Rx':v.rx,'--R':v.ry,'--ship-size':v.ship}))map.style.setProperty(key,value+'px');
+ if(!v){map.dataset.layoutError='Insufficient space for pentagon units';return;}
+ delete map.dataset.layoutError;mapLayoutKey=key;
+ for(const [key,value] of Object.entries({'--sz':v.d,'--cx':v.cx,'--cy':v.cy,'--orbit-cy':v.cy,'--Rx':v.R,'--R':v.R,'--ship-size':v.ship}))map.style.setProperty(key,value+'px');
  nodes.forEach((n,i)=>{n.style.setProperty('--x',v.points[i].x+'px');n.style.setProperty('--y',v.points[i].y+'px');n.style.setProperty('--unit-w',v.boxes[i].w+'px');n.style.setProperty('--unit-h',v.boxes[i].h+'px');});
- map.dataset.layout=JSON.stringify({width:w,height:h,diameter:v.d,rx:v.rx,ry:v.ry,shipY:v.shipY,caption,shoulder:v.shoulder,spread:v.spread,points:v.points,units:v.boxes,shipZone:zoneBox(v)});
+ map.dataset.layout=JSON.stringify({width:w,height:h,diameter:v.d,cx:v.cx,cy:v.cy,R:v.R,rx:v.R,ry:v.R,shipY:v.cy,caption,labelH,labelWidths,points:v.points,units:v.boxes,parts:v.parts,shipZone:v.shipZone});
+ window.__layout=()=>({cx:v.cx,cy:v.cy,R:v.R,size:v.d,nodes:v.points.map(p=>({...p}))});
  if(state==='ship-turn'||turnTime!==null)freezeShipTurn(turnTime??150);
  else if($('shipTurn').dataset.target!==undefined)shipHeading(Number($('shipTurn').dataset.target));
 }
@@ -716,7 +767,7 @@ const long=(p.phase==='waiting'||p.phase==='drawing')&&p.elapsed>CONFIG.vrfTimeo
 $('countdown').textContent=p.phase==='open'?String(Math.floor(Math.ceil(p.remaining)/60)).padStart(2,'0')+':'+String(Math.ceil(p.remaining)%60).padStart(2,'0'):p.phase==='drawing'?'--:--':'00:00';
 $('countdown').classList.toggle('late',p.phase==='open'&&p.remaining<=10);$('countLabel').textContent=p.phase==='open'?'封盘倒计时':p.phase==='drawing'?'开奖中':p.phase==='void'?'本轮无效':'已封盘';if(long)$('countLabel').innerHTML='<a href="'+CONFIG.vrfRequestUrl+'" target="_blank" rel="noopener" title="确认中 · 查看请求">已封盘 ↗</a>';
 $('map').classList.toggle('drawing',p.phase==='drawing');$('skip').hidden=!(['waiting','drawing'].includes(p.phase)||(p.phase==='result'&&(p.result?.age<M.burst||confettiJobs.length>0)&&!p.skipped));updateTimer(p);updateRecent(p);
-nodes.forEach((el,i)=>{syncLock(el,selection===i,p.myStake>0&&p.myZone===i&&!(sealed&&p.draft));const proposed=q.editing&&p.selected===i,den=sealed?p.frozenTotals[i]:p.totals[i]+(proposed?q.x:0),M=den?(sealed?p.frozenPool:proposed?q.P:pool(p))/den:0;el.classList.toggle('sel',selection===i);el.classList.toggle('dim',p.hit?p.hit.zone!==i:selection>=0&&selection!==i);el.classList.toggle('result-dim',!!p.hit&&p.hit.zone!==i);el.classList.toggle('hit',!!p.hit&&p.hit.zone===i);el.querySelector('.hitbadge').hidden=!(p.hit&&p.hit.zone===i&&p.hit.age<CONFIG.hitBadgeMs);const stake=sealed?p.frozenTotals[i]:displayStake(p,i),people=sealed?p.frozenCounts[i]:p.counts[i]-(p.bet?.zone===i&&p.bet.first&&performance.now()-p.bet.start<M.betCharge+M.betFire?1:0),tag=el.querySelector('.micro-tag');el.querySelector('em').textContent=den&&people?'×'+(Math.floor(M*100+1e-9)/100).toFixed(2):'—';tag.textContent=sealed?'最终':proposed?'含本次':'';tag.hidden=!tag.textContent;el.querySelector('.zone-data').textContent=people?people+' 人 · '+zoneStake(stake)+' '+unit():'暂无投入';el.setAttribute('aria-pressed',String(selection===i));el.setAttribute('aria-label',N[i]+'，'+el.querySelector('em').textContent+(proposed?'，含本次':'')+'，'+el.querySelector('.zone-data').textContent);});
+nodes.forEach((el,i)=>{syncLock(el,selection===i,p.myStake>0&&p.myZone===i&&!(sealed&&p.draft));const proposed=q.editing&&p.selected===i,den=sealed?p.frozenTotals[i]:p.totals[i]+(proposed?q.x:0),M=den?(sealed?p.frozenPool:proposed?q.P:pool(p))/den:0;el.classList.toggle('sel',selection===i);el.classList.toggle('dim',p.hit?p.hit.zone!==i:selection>=0&&selection!==i);el.classList.toggle('result-dim',!!p.hit&&p.hit.zone!==i);el.classList.toggle('hit',!!p.hit&&p.hit.zone===i);el.querySelector('.hitbadge').hidden=!(p.hit&&p.hit.zone===i&&p.hit.age<CONFIG.hitBadgeMs);const stake=sealed?p.frozenTotals[i]:displayStake(p,i),people=sealed?p.frozenCounts[i]:p.counts[i]-(p.bet?.zone===i&&p.bet.first&&performance.now()-p.bet.start<M.betCharge+M.betFire?1:0),tag=el.querySelector('.micro-tag');el.querySelector('em').textContent=den&&people?'×'+(Math.floor(M*100+1e-9)/100).toFixed(2):'—';tag.textContent=sealed?'最终':proposed?'含本次':'';tag.hidden=!tag.textContent;el.querySelector('.zone-data').textContent=people?people+'人·'+zoneStake(stake)+unit():'暂无投入';el.setAttribute('aria-pressed',String(selection===i));el.setAttribute('aria-label',N[i]+'，'+el.querySelector('em').textContent+(proposed?'，含本次':'')+'，'+el.querySelector('.zone-data').textContent);});
 $('chips').innerHTML=CONFIG.quickBets[room].map(v=>{const reason=v>CONFIG.maxBet[room]||v<CONFIG.minBet[room]?'超过单笔限额':v>p.balance+1e-9?'余额不足':'';return`<button class="chip ${Number(p.amount)===v?'on':''}" data-amount="${v}" aria-label="押 ${v} ${unit()}${reason?'，'+reason:''}" aria-pressed="${Number(p.amount)===v}" ${reason||p.signing?'disabled':''} title="${reason}">${v}</button>`;}).join('')+`<button class="chip ${!CONFIG.quickBets[room].includes(Number(p.amount))?'on':''}" id="custom" ${p.signing?'disabled':''}>自定义</button>`;
 $('amountError').hidden=!err;$('amountError').textContent=err;let text='',sub='';if(p.signing)text='<i class="spinner" aria-hidden="true"></i>钱包签名中…';else if(sealed)text=p.phase==='drawing'||p.phase==='waiting'&&p.elapsed>0?'开奖中…':p.phase==='void'?'本轮无效 · 本金全额退款':p.phase==='result'?'本局已开奖 · 下一局即将开始':'已封盘 · 等待开奖';else if(!connected)text='连接钱包';else if(p.selected<0)text='先选一颗星球';else {text=p.myStake?'加注 '+N[p.myZone]+' +'+short(q.x)+' '+unit():'押 '+short(q.x)+' '+unit();if(!err)sub=p.myStake?'本轮已投入 '+short(p.myStake)+' · 合计预计可领 '+num(q.Z):'命中预计赢 '+num(q.Y)+' '+unit()+' · 估算';}
 $('cta').innerHTML='<span>'+text+'</span>'+(sub?'<small>'+sub+'</small>':'');$('cta').disabled=p.signing||sealed||(connected&&(p.selected<0||!!err));$('estimateInfo').hidden=!sub;$('cta').classList.toggle('has-info',!!sub);
@@ -751,7 +802,7 @@ $('nav').innerHTML=['远征','战报','荣誉','我的'].map((n,i)=>`<button dat
 // final10 feed-you sweep beam burst win-rain lose-card history；
 // v7.1: jackpot-pop ship-turn (?turnt=0/150/300/450); jackpot-strip is connected alias.
 // v7: jackpot-strip jackpot-inject jackpot-burst jackpot-title jackpot-count jackpot-mine jackpot-other jackpot-rollover jackpot-report jackpot-history verify fees；?jpt=ms / ?jp=1；?lockt / ?drawt / ?fxt 冻结毫秒。
-const M=CONFIG.motion,COLORS=['#ff7a40','#d6e2e6','#60e0a0','#c48cd6','#e8ce96'],ORDER=[0,1,2,4,3];
+const M=CONFIG.motion,COLORS=['#ff7a40','#d6e2e6','#60e0a0','#c48cd6','#e8ce96'],ORDER=[0,1,2,3,4];
 const drawTime=params.has('drawt')?Math.max(0,Number(params.get('drawt'))||0):null;
 const fxTime=params.has('fxt')?Math.max(0,Number(params.get('fxt'))||0):null;
 const jpTime=params.has('jpt')?Math.max(0,Number(params.get('jpt'))||0):null;
@@ -769,9 +820,29 @@ function chime(win=false){(win?[523.25,659.25,783.99,1046.5]:[660,880]).forEach(
 $('sound').onclick=()=>{muted=!muted;if(!muted){try{audio??=new(window.AudioContext||window.webkitAudioContext)();audio.resume();}catch{}}try{localStorage.setItem('spark-v6-sound',muted?'off':'on');}catch{}soundIcon();};soundIcon();
 function updateTimer(p){const timer=$('timerRing').parentElement,urgent=p.phase==='open'&&p.remaining<=10;timer.classList.toggle('urgent',urgent);timer.classList.toggle('beating',urgent&&!reduced&&!low);timer.classList.toggle('sealed',p.phase!=='open');if(urgent&&!p.heartbeatStarted){timer.style.setProperty('--beat-delay',-(1000*(Math.ceil(p.remaining)-p.remaining))+'ms');p.heartbeatStarted=true;}if(!urgent)p.heartbeatStarted=false;$('timerRing').style.setProperty('--offset',String(50.2655*(1-(p.phase==='open'?Math.min(1,p.remaining/initialSeconds):0))));}
 function tokenIcon(){return room==='BNB'?'<svg class="token-glyph" viewBox="0 0 24 24" aria-hidden="true" fill="#F3BA2F"><path d="m12 2 5 5-2.5 2.5L12 7 9.5 9.5 7 7Zm-7 7 3 3-3 3-3-3Zm14 0 3 3-3 3-3-3Zm-7 .5 2.5 2.5-2.5 2.5L9.5 12ZM7 17l2.5-2.5L12 17l2.5-2.5L17 17l-5 5Z"/></svg>':'<svg class="token-glyph" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#26A17B"/><path d="M6 6h12v3h-4.5v2c4 .2 5.5.7 5.5 1.5s-2.5 1.5-7 1.5-7-.7-7-1.5 1.5-1.3 5.5-1.5V9H6Zm4.5 6c-3 .1-4 .3-4 .5s2 .5 5.5.5 5.5-.3 5.5-.5-1-.4-4-.5v.5h-3Zm0 2h3v5h-3Z" fill="white"/></svg>';}
-function paintFeed(item=null){const p=current(),v=item||p.feedItems[0];$('feedLine').textContent=v?v.text:'等待本轮入局动态';if(!reduced&&!frozen)animate($('feedLine'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],M.feed);}
-function addFeed(text,amount='',p=current()){const item={text,amount,round:p.round};p.feedItems.unshift(item);p.feedItems=p.feedItems.slice(0,100);if(p===current())paintFeed(item);}
-function feed(who,z,amount,you=false){feedVersion++;const value=Number(amount).toFixed(room==='BNB'?2:0)+' '+unit();addFeed((you?'你':who)+' 押 '+N[z]+' · '+value,value);}
+let feedSlot=0,feedSwapTimer=0;
+function feedMarkup(v){
+ if(!v)return '等待本轮入局动态';
+ const safe=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ if(v.zone===undefined)return safe(v.text);
+ return '<i aria-hidden="true"></i><span class="feed-address">'+safe(v.who)+'</span><span>押</span><span class="feed-planet">'+N[v.zone]+'</span><span class="feed-amount">'+safe(v.amount)+'</span>';
+}
+// v7.6 审阅：切换节流——上一条动画（380ms）未结束时排队，避免机器人入局与轮播计时器同时触发造成跳变
+let feedBusyUntil=0,feedPending=null,feedPendingTimer=0;
+function paintFeed(item=null){
+ const nowF=performance.now();if(!reduced&&!frozen&&nowF<feedBusyUntil){feedPending=item;clearTimeout(feedPendingTimer);feedPendingTimer=setTimeout(()=>{const q=feedPending;feedPending=null;paintFeed(q);},feedBusyUntil-nowF+20);return;}
+ const v=item||current().feedItems[0],key=room+':'+(v?.text||'empty'),lines=[$('feedLine'),$('feedNext')],old=lines[feedSlot];
+ if(old.dataset.key===key)return;
+ clearTimeout(feedSwapTimer);
+ const next=lines[1-feedSlot];next.style.transition='none';next.className='feed-line';next.innerHTML=feedMarkup(v);next.dataset.key=key;next.style.setProperty('--feed-color',v?.zone===undefined?'var(--text-3)':COLORS[v.zone]);
+ next.setAttribute('aria-hidden','false');old.setAttribute('aria-hidden','true');
+ void next.offsetHeight;
+ next.style.transition='';feedBusyUntil=performance.now()+420;old.className='feed-line is-out';next.className='feed-line is-current';feedSlot=1-feedSlot;
+ // Both lines remain in the same fixed viewport; only transforms and opacity change.
+ feedSwapTimer=setTimeout(()=>{old.style.transition='none';old.className='feed-line';},reduced||frozen?0:380);
+}
+function addFeed(text,amount='',p=current(),details={}){const item={text,amount,round:p.round,...details};p.feedItems.unshift(item);p.feedItems=p.feedItems.slice(0,100);if(p===current())paintFeed(item);}
+function feed(who,z,amount,you=false){feedVersion++;const value=Number(amount).toFixed(room==='BNB'?2:0)+' '+unit();addFeed((you?'你':who)+' 押 '+N[z]+' · '+value,value,current(),{who:you?'你':who,zone:z});}
 function selectionMotion(){if(reduced)return;animate($('chips'),[{transform:'translateY(8px)',opacity:.25},{transform:'translateY(0)',opacity:1}],M.amount);$('cta').classList.remove('sheen');void $('cta').offsetWidth;$('cta').classList.add('sheen');}
 function displayStake(p,i){const roll=p.joinRoll;if(!roll||roll.zone!==i)return p.totals[i];const elapsed=frozen&&p.bet?(fxTime??800)-M.betCharge-M.betFire:performance.now()-roll.start;const t=Math.max(0,Math.min(1,elapsed/M.betNumbers));if(t>=1){p.joinRoll=null;return p.totals[i];}return roll.from+(roll.to-roll.from)*(1-Math.pow(1-t,3));}
 function seedRng(seed=61){return()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};}
@@ -814,7 +885,7 @@ function drawFX(now,fixed=null){const ctx=$('fx').getContext('2d');ctx.clearRect
 function startFX(){if(fxRaf||frozen)return;fxRaf=requestAnimationFrame(function tick(now){fxRaf=0;if(document.hidden){fxJobs=[];return;}drawFX(now);const ended=fxJobs.filter(j=>now-j.start>=j.duration);fxJobs=fxJobs.filter(j=>now-j.start<j.duration);ended.forEach(j=>j.onEnd?.());if(current().joinRoll||current().bet)render();if(current().result?.kind==='win')updateResultAmount(current().result);if(fxJobs.length||current().joinRoll||current().bet||resultRolling())fxRaf=requestAnimationFrame(tick);else $('fx').getContext('2d').clearRect(0,0,fxBounds.w,fxBounds.h);});}
 function resultRolling(){const r=current().result;return !reduced&&!low&&!current().skipped&&r?.kind==='win'&&r.age<M.resultDelay+M.resultCount;}
 function joinMotion(p,z,old){p.bet={zone:z,old,start:performance.now(),first:p.myStake===Number(p.amount)};p.joinRoll={zone:z,from:old,to:p.totals[z],start:performance.now()+ (reduced?0:M.betCharge+M.betFire)};if(!reduced&&!low)fxAdd('bet',z);if(!frozen)startFX();}
-function updateRecent(p){const items=(p.result?[p.result,...p.history]:p.history).filter((r,i,all)=>all.findIndex(x=>x.round===r.round)===i).slice(0,8),key=items.map(r=>r.round+':'+r.zone+':'+!!r.jackpot).join(',');if($('recent').dataset.key===key)return;$('recent').dataset.key=key;$('recent').innerHTML=items.map(r=>'<i class="'+(r.jackpot?'jp-dot':'')+'" style="background:'+COLORS[r.zone]+'" title="#'+r.round+' · '+N[r.zone]+'" aria-label="#'+r.round+' · '+N[r.zone]+'"></i>').join('');$('recent').setAttribute('aria-label','最近开奖 · '+(items.map(r=>'第 '+r.round+' 轮 '+N[r.zone]).join('，')||'暂无记录')+'，最新在前');}
+function updateRecent(p){const items=(p.result?[p.result,...p.history]:p.history).filter((r,i,all)=>all.findIndex(x=>x.round===r.round)===i).slice(0,6),key=items.map(r=>r.round+':'+r.zone+':'+!!r.jackpot).join(',');if($('recent').dataset.key===key)return;$('recent').dataset.key=key;$('recent').innerHTML=items.map(r=>'<i class="'+(r.jackpot?'jp-dot':'')+'" style="background:'+COLORS[r.zone]+'" title="#'+r.round+' · '+N[r.zone]+'" aria-label="#'+r.round+' · '+N[r.zone]+'"></i>').join('');$('recent').setAttribute('aria-label','最近开奖 · '+(items.map(r=>'第 '+r.round+' 轮 '+N[r.zone]).join('，')||'暂无记录')+'，最新在前');}
 $('recent').onclick=()=>activitySheet('recent');
 function renderResult(p){const r=p.result;const visible=!!r&&(p.skipped||reduced||r.age>=M.resultDelay);$('result').hidden=!visible;if(visible&&!r.cardRevealed){r.cardRevealed=true;if(r.kind==='win'&&r.jr!==0&&!r.jackpot&&!p.jpForced&&!p.skipped)startConfetti('win',r.zone);animate($('result'),[{opacity:0,translate:'0 8px'},{opacity:1,translate:'0 0'}],M.resultReveal);}$('app').classList.toggle('has-result',!!r);if(!r){$('result').dataset.key='';return;}const key=r.round+':'+r.kind+':'+!!r.jackpot;if($('result').dataset.key===key)return;$('result').dataset.key=key;$('result').className='result '+(r.kind==='win'?'win-card':'neutral');const mult=(Math.floor((r.kind==='win'?r.payout/r.principal:r.pool/p.frozenTotals[r.zone])*100+1e-9)/100).toFixed(2);const title=r.kind==='void'?'本轮无效 · 无人命中':r.kind==='win'?'命中 · '+N[r.zone]+' ×'+mult:'本局获胜 · '+N[r.zone]+' ×'+mult;const detail=r.kind==='win'?'净得 '+(r.net>=0?'+':'−')+num(Math.abs(r.net))+' '+unit(r.room):r.kind==='void'?'100% 本金退款 · 查看战报 ›':(r.kind==='lose'?'你押 '+N[p.myZone]+' · 本局未命中 · 本金 '+short(r.principal)+' '+unit(r.room):'本局未参与 · 查看战报 ›');const leaders=(r.kind==='lose'||r.kind==='none')?'<span class="leaders">'+r.winners.slice(0,3).map(w=>'<span>'+w.addr+' +'+short(w.payout)+'</span>').join('')+'</span>':'';
 $('result').innerHTML='<i class="result-dot" style="background:'+COLORS[r.zone]+'" aria-hidden="true"></i><span class="rc"><b>'+title+'</b><small>'+detail+'</small>'+leaders+'</span>'+(r.kind==='win'?'<span class="rv"><b id="resultAmount">'+num(r.payout)+'</b><small>'+unit(r.room)+'</small></span>':r.kind==='void'?'<span class="rv"><b>退 '+num(r.principal)+'</b></span>':'<button class="next" data-next>下一局</button>');$('result').tabIndex=0;$('result').onkeydown=e=>{if(e.target===$('result')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();report(r);}};updateResultAmount(r);if(r.jackpot){$('result').classList.add('jackpot-result');$('result').innerHTML='<span class="plasma" aria-hidden="true"></span><span class="rc"><b>★ 星核大奖 · '+(r.jackpot.rollover?'继续滚存':N[r.zone])+'</b><small>'+(r.jackpot.myShare?'你分得 '+num(r.jackpot.myShare)+' '+unit(r.room):r.kind==='lose'?'本局获胜 · '+N[r.zone]+' · 本轮未命中':'查看星核大奖战报 ›')+'</small></span><span class="rv"><b>'+num(r.jackpot.payoutTotal)+'</b><small>'+unit(r.room)+' 总计派发</small></span>';}}
@@ -890,7 +961,7 @@ if(p.result){p.result.age=drawTime!==null?Math.max(0,drawTime-schedule(p).end):M
 function syncScene(p){const drawing=['waiting','drawing'].includes(p.phase),r=p.result;$('map').classList.toggle('dark',!reduced&&!p.skipped&&!p.collapsing&&(drawing&&p.elapsed>=0||!!r));if(!drawing){if(!r)$('map').querySelector('.dim-layer').style.opacity='';$('shipTurn').style.transitionDuration=M.shipTurn+'ms';$('shipTurn').style.transitionTimingFunction='cubic-bezier(.4,0,.2,1)';$('radar').classList.remove('active');if(!p.bet)$('energy').hidden=true;if(p.hit)shipHeading(p.hit.zone);else if(!p.bet){if(p.selected>=0)shipHeading(p.selected);else{shipHeading(-1);}}}
  const show=!!p.hit&&!!r&&(p.skipped||reduced||r.age>=M.captionDelay);const caption=$('caption');if(show){const key=p.round+':'+p.hit.zone;if(caption.dataset.key!==key){caption.dataset.key=key;caption.innerHTML='<small>第 '+p.round+' 局</small><strong>本局星火 · <span>'+N[p.hit.zone]+'</span></strong>';caption.style.setProperty('--planet-color',COLORS[p.hit.zone]);animate(caption,[{opacity:0},{opacity:1}],p.skipped?M.fade:M.caption);animate(caption.querySelector('strong'),[{letterSpacing:'.5em',scale:'1.06'},{letterSpacing:'.14em',scale:'1'}],M.caption);}}caption.hidden=!show;if(p.bet)paintBet(p,fxTime??performance.now()-p.bet.start);}
 function paintBet(p,t){const b=p.bet;if(!b)return;const z=b.zone,node=nodes[z],impact=M.betCharge+M.betFire;const drawingNow=['waiting','drawing','result'].includes(p.phase);if(!drawingNow){shipHeading(z);$('ship').classList.remove('idle');}if(reduced){animate(node.querySelector('.zone-data'),[{opacity:.3},{opacity:1}],M.fade);p.bet=null;p.joinRoll=null;return;}/* v6.1 审阅：下注能量流由 fx 画布绘制；SVG #energy 只留给开奖射线，这里不再隐藏它 */if(t>=impact&&!b.impacted){b.impacted=true;const u=frozen?Math.max(0,t-impact):0;const frames=[{transform:'scale(.8)',opacity:.8},{transform:'scale(1.6)',opacity:0}];if(frozen){const q=Math.min(1,u/M.betShock);node.querySelector('.lock').style.opacity=String(.4+.6*Math.abs(1-2*Math.min(1,u/M.betLock)));node.querySelector('.zone-data').style.color='#C9C2FF';node.querySelector('.zone-data').style.transform='scale(1.03)';node.querySelector('.ripple').style.cssText='opacity:'+(.8*(1-q))+';transform:scale('+(.8+.8*q)+')';node.querySelector('.orb').style.filter='brightness(1.3)';}else{animate(node.querySelector('.ripple'),frames,M.betShock);animate(node.querySelector('.orb'),[{filter:'brightness(1)'},{filter:'brightness(1.45)'},{filter:'brightness(1)'}],M.betPulse);animate(node.querySelector('.lock'),[{opacity:1,transform:'scale(1.06)'},{opacity:.4},{opacity:1,transform:'scale(1)'}],M.betLock);animate(node.querySelector('.zone-data'),[{transform:'scale(1)',color:'#A9A7B6'},{transform:'scale(1.03)',color:'#C9C2FF'},{transform:'scale(1)',color:'#A9A7B6'}],M.betNumbers);}}if(t>=impact+Math.max(M.betImpact,M.betNumbers)&&!frozen)p.bet=null;}
-function revealImpact(p){const z=p.hit.zone,point=orbPoint(z),wave=$('mapWave');wave.style.left=point.x+'px';wave.style.top=point.y+'px';if(frozen){const t=Math.min(1,(fxTime??(state==='burst'?210:M.impact))/M.impact);wave.style.transform='scale('+(3*t)+')';wave.style.opacity=String(.5*(1-t));}else{wave.style.opacity='';animate(wave,[{transform:'scale(0)',opacity:.5},{transform:'scale(3)',opacity:0}],M.impact);}animate(nodes[z].querySelector('.orb'),[{transform:'translateY(0) scale(1.12)'},{transform:'translate(var(--hitx),var(--hity)) scale(1.12)'},{transform:'translate(var(--hitx),var(--hity)) scale(1.12)'}],M.rise);}
+function revealImpact(p){const z=p.hit.zone,point=orbPoint(z),wave=$('mapWave');wave.style.left=point.x+'px';wave.style.top=point.y+'px';if(frozen){const t=Math.min(1,(fxTime??(state==='burst'?210:M.impact))/M.impact);wave.style.transform='scale('+(3*t)+')';wave.style.opacity=String(.5*(1-t));}else{wave.style.opacity='';animate(wave,[{transform:'scale(0)',opacity:.5},{transform:'scale(3)',opacity:0}],M.impact);}animate(nodes[z].querySelector('.orb'),[{transform:'scale(1.12)'},{transform:'translate(var(--hitx),var(--hity)) scale(1.12)'},{transform:'translate(var(--hitx),var(--hity)) scale(1.12)'}],M.rise);}
 
 // v7 · 单个随机整数同时决定星球与大奖；没有非触发反馈或接近阈值提示。
 let jpDebugPending=params.get('jp')==='1',jpActive=null,jpRaf=0,jpFocus=null;
