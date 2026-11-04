@@ -125,9 +125,9 @@
   --space-48:48px;
   --page-margin:var(--space-16);
   --layout-max:520px;
-  --gap-section:var(--space-16);
-  --gap-map-activity:var(--space-12);
-  --gap-dock:var(--space-12);
+  --gap-section:var(--space-8);
+  --gap-map-activity:var(--space-8);
+  --gap-dock:var(--space-8);
   --gap-action:var(--space-16);
   --gap-compliance:var(--space-16);
   --gap-nav:var(--space-16);
@@ -377,7 +377,9 @@ html,body{overflow:hidden;height:100%}
 .hud{flex:0 0 var(--height-header);height:var(--height-header);gap:var(--gap-inline);margin-bottom:var(--space-8)}
 .stats{flex:0 0 var(--height-stats);height:var(--height-stats);margin-bottom:var(--gap-section)}.stat-cell{height:var(--height-stats)}
 .middle{flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:var(--gap-map-activity);overflow:visible;margin-bottom:var(--gap-dock)}
-.map{grid-row:1;min-height:0;overflow:clip}
+.map{grid-row:1;min-height:0;overflow:visible}
+/* v8.1: non-clipping planet overlay above the stats edge; text stays clear. */
+.middle{z-index:2}.stats{z-index:1}
 .caption{bottom:0}.caption strong{font-size:var(--fs-24)}
 .dock{flex:none;display:flex;flex-direction:column;gap:0;margin-bottom:var(--gap-nav)}
 .dock .amount-wrap,.dock .cta-wrap{padding:0;flex:none}.amount-wrap{margin-bottom:var(--gap-action);min-height:var(--height-chip)}
@@ -469,7 +471,7 @@ html,body{overflow:hidden;height:100%}
 .amount-wrap:has(.amount-error:not([hidden])){padding-bottom:0}.amount-error{line-height:16px}
 @keyframes float-v75{0%,100%{transform:translateY(-1px)}50%{transform:translateY(1px)}}
 /* CTA 下方保留安静的开奖入口，点击区计入布局预算。 */
-.dock{margin-bottom:12px}
+.dock{margin-bottom:8px}
 .history-row{display:flex;flex:none;align-items:center;justify-content:center;gap:12px;width:100%;height:44px;min-height:44px;margin-top:16px;padding:0 8px;background:none;border:0;color:var(--text-3);font:400 11px/16px var(--font)}
 .history-row .recent{position:static;display:flex;align-items:center;gap:8px;height:auto;min-height:0;padding:0;overflow:visible;pointer-events:none}
 .history-row .recent:after{display:none}
@@ -846,26 +848,26 @@ function layoutMap(){
  const key=[w,h,caption,labelH,...labelWidths].join('|');
  if(key===mapLayoutKey)return;
  const angles=[-90,-18,54,126,198],vectors=angles.map(a=>({x:Math.cos(a*Math.PI/180),y:Math.sin(a*Math.PI/180)}));
- const vertical=vectors[2].y-vectors[1].y,bottomWidth=vectors[2].x-vectors[3].x;
+ const bottomWidth=vectors[2].x-vectors[3].x;
  const heightSpan=1+vectors[2].y,widthSpan=2*vectors[1].x,labelW=Math.max(...labelWidths);
  const intersects=(a,b)=>a.x<b.x+b.w+gap-.001&&a.x+a.w+gap>b.x+.001&&a.y<b.y+b.h+gap-.001&&a.y+a.h+gap>b.y+.001;
  let v;
  // Exact pentagon bounds; descend only diameter, choosing the largest feasible R.
- // Reserve the entire 128% texture/atmosphere at 1.12× scale, ±4px float,
- // reticle stroke/bracket motion and the 88px stake badge, even before selection.
+ // Allow upper light effects through the non-clipping middle layer, but reserve
+ // the full bottom visual envelope plus 4px before the activity bar.
  search:for(let d=Math.min(100,Math.floor(w)/2);d>=8;d-=.5){
-  const orbRadius=Math.max(22,d/2+1),ship=Math.max(24,Math.min(48,d*.6));
-  const visualRadius=Math.max(22,d*.72+6),horizontalRadius=Math.max(44,visualRadius),below=Math.max(visualRadius,d/2+labelGap+labelH);
-  const maxR=Math.min((available-2*pad-visualRadius-below)/heightSpan,(w-2*pad-Math.max(2*horizontalRadius,labelW))/widthSpan);
-  const minR=Math.max((2*orbRadius+labelGap+labelH+gap)/vertical,(labelW+gap)/bottomWidth,d*.95+8);
+  const orbRadius=Math.max(22,d*.56+1),ship=Math.max(24,Math.min(48,d*.6));
+  const visualRadius=Math.max(22,d*.72+6),horizontalRadius=visualRadius,below=Math.max(visualRadius+8,d/2+labelGap+labelH);
+  const maxR=Math.min((available-2*pad-orbRadius-below)/heightSpan,(w-2*pad-Math.max(2*orbRadius,labelW))/widthSpan);
+  const minR=Math.max((labelW+gap)/bottomWidth,d*.95+8);
   if(maxR<minR)continue;
-  const R=maxR,cx=w/2,cy=(available+visualRadius-below+(1-vectors[2].y)*R)/2;
+  const R=maxR,cx=w/2,cy=(available+orbRadius-below+(1-vectors[2].y)*R)/2;
   const points=vectors.map((q,i)=>({x:cx+q.x*R,y:cy+q.y*R,angle:angles[i]}));
-  const radius=d*.45,shipZone={x:cx-radius,y:cy-radius,w:radius*2,h:radius*2,cx,cy,r:radius};
+  const radius=Math.max(d*.3,ship/2+8),shipZone={x:cx-radius,y:cy-radius,w:radius*2,h:radius*2,cx,cy,r:radius};
   const shipOverlap=(a,j)=>j===0?Math.hypot(a.x+a.w/2-cx,a.y+a.h/2-cy)<a.w/2+radius+gap:Math.hypot(Math.max(a.x-cx,0,cx-a.x-a.w),Math.max(a.y-cy,0,cy-a.y-a.h))<radius+gap;
   const parts=points.map((p,i)=>[{x:p.x-orbRadius,y:p.y-orbRadius,w:orbRadius*2,h:orbRadius*2},{x:p.x-labelWidths[i]/2,y:p.y+d/2+labelGap,w:labelWidths[i],h:labels[i].height}]);
   if(parts.some((unit,i)=>unit.some((a,j)=>a.x<pad-.001||a.y<pad-.001||a.x+a.w>w-pad+.001||a.y+a.h>available-pad+.001||shipOverlap(a,j)||parts.some((other,j)=>j>i&&other.some(b=>intersects(a,b))))))continue;
-  if(points.some(p=>p.x-horizontalRadius<pad||p.x+horizontalRadius>w-pad||p.y-visualRadius<pad||p.y+visualRadius>available-pad))continue;
+  if(points.some(p=>p.x-visualRadius+(bounds.left??16)<0||p.x+visualRadius>w+(bounds.left??16)))continue;
   const boxes=parts.map(unit=>{const x=Math.min(...unit.map(a=>a.x)),y=Math.min(...unit.map(a=>a.y));return{x,y,w:Math.max(...unit.map(a=>a.x+a.w))-x,h:Math.max(...unit.map(a=>a.y+a.h))-y};});
   v={d,R,cx,cy,ship,points,boxes,parts,shipZone,visualRadius,horizontalRadius};break search;
  }
@@ -873,7 +875,7 @@ function layoutMap(){
  delete map.dataset.layoutError;mapLayoutKey=key;
  for(const [key,value] of Object.entries({'--sz':v.d,'--cx':v.cx,'--cy':v.cy,'--orbit-cy':v.cy,'--Rx':v.R,'--R':v.R,'--ship-size':v.ship}))map.style.setProperty(key,value+'px');
  nodes.forEach((n,i)=>{n.style.setProperty('--x',v.points[i].x+'px');n.style.setProperty('--y',v.points[i].y+'px');n.style.setProperty('--unit-w',v.boxes[i].w+'px');n.style.setProperty('--unit-h',v.boxes[i].h+'px');});
- const reticles=[];nodes.forEach((n,i)=>{const p=v.points[i];let diameter=v.d*1.32;v.parts.forEach((parts,j)=>{if(i===j)return;const a=parts[1],distance=Math.hypot(Math.max(a.x-p.x,0,p.x-a.x-a.w),Math.max(a.y-p.y,0,p.y-a.y-a.h));diameter=Math.min(diameter,2*(distance-6));});reticles.push(Math.max(v.d,diameter));n.style.setProperty('--reticle-size',reticles[i]+'px');});
+ const reticles=[];nodes.forEach((n,i)=>{const p=v.points[i];let diameter=v.d*1.24;v.parts.forEach((parts,j)=>{if(i===j)return;const a=parts[1],distance=Math.hypot(Math.max(a.x-p.x,0,p.x-a.x-a.w),Math.max(a.y-p.y,0,p.y-a.y-a.h));diameter=Math.min(diameter,2*(distance-6));});reticles.push(Math.max(v.d,diameter));n.style.setProperty('--reticle-size',reticles[i]+'px');});
  map.dataset.layout=JSON.stringify({width:w,height:h,diameter:v.d,cx:v.cx,cy:v.cy,R:v.R,rx:v.R,ry:v.R,shipY:v.cy,caption,labelH,labelWidths,points:v.points,units:v.boxes,parts:v.parts,shipZone:v.shipZone,reticles,visualRadius:v.visualRadius,horizontalRadius:v.horizontalRadius});
  window.__layout=()=>({cx:v.cx,cy:v.cy,R:v.R,size:v.d,nodes:v.points.map(p=>({...p}))});
  if(state==='ship-turn'||turnTime!==null)freezeShipTurn(turnTime??150);
