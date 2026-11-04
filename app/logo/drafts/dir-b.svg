@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="sx-drafts-dir-b" role="img" aria-labelledby="sx-drafts-dir-b-title">
+  <title id="sx-drafts-dir-b-title">B · 轨道火种 / Orbital ember</title>
+  <ellipse cx="32" cy="34" rx="25" ry="16" transform="rotate(-20 32 34)" fill="none" stroke="#FFC24D" stroke-width="4"/>
+  <path d="M48 7C49 15 57 16 56 23C55 30 46 32 41 27C35 21 41 15 48 7Z" fill="#FFC24D"/>
+  <circle cx="32" cy="34" r="3" fill="#8F7BFF"/>
+  <path d="M32 5V10M32 56V61" fill="none" stroke="#FFC24D" stroke-width="4" stroke-linecap="round"/>
+</svg>
