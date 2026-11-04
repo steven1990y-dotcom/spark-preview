@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Not found</title>
+  <script>
+    (function () {
+      var path = location.pathname || "";
+      if (path.indexOf("/spark-preview/app") === 0) {
+        location.replace("/spark-preview/app/" + location.search + location.hash);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Page not found.</p>
+</body>
+</html>

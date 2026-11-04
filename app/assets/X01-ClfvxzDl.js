@@ -1,0 +1,1 @@
+import{t as e}from"./BatchPage-Bd76UNmo.js";import{t}from"./vendor-react-D0fIEmUq.js";var n=t();function r(){let t=new URLSearchParams(location.search).get(`state`)||`default`;return(0,n.jsx)(e,{id:`X01`,state:t})}export{r as default};
