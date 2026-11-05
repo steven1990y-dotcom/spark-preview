@@ -69,7 +69,7 @@
       '<button type="button" data-app-demo="quiet" aria-pressed="false">' + (zh ? '安静日' : 'Quiet day') + '</button>' +
       '<button type="button" data-app-demo="budget" aria-pressed="false">' + (zh ? '无预算' : 'No budget') + '</button>' +
       '</div></div>' +
-      '<a class="app-link-design" href="design.html">' + (zh ? '查看设计规范长页 →' : 'Open design system →') + '</a>';
+      '<a class="app-link-design" href="spec.html">' + (zh ? '查看设计规范长页 →' : 'Open design system →') + '</a>';
     const firstSection = host.querySelector('.section-label');
     if (firstSection) host.insertBefore(block, firstSection);
     else host.appendChild(block);
