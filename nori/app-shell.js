@@ -37,6 +37,8 @@
   const prevRender = renderScreens;
   renderScreens = function () {
     prevRender();
+    removeHomeDemoControls();
+    syncTotals();
     queueMicrotask(() => {
       injectSettingsExtras();
       showScreen(current || 'home');
@@ -68,7 +70,10 @@
       '<button type="button" data-app-demo="empty" aria-pressed="false">' + (zh ? '首次' : 'First use') + '</button>' +
       '<button type="button" data-app-demo="quiet" aria-pressed="false">' + (zh ? '安静日' : 'Quiet day') + '</button>' +
       '<button type="button" data-app-demo="budget" aria-pressed="false">' + (zh ? '无预算' : 'No budget') + '</button>' +
-      '</div></div>' +
+      '<button type="button" data-app-demo="filteredEmpty">' + (zh ? '筛选无结果' : 'No results') + '</button>' +
+      '<button type="button" data-app-demo="offline">' + (zh ? '当前离线' : 'Offline') + '</button>' +
+      '<button type="button" data-app-demo="errorState">' + (zh ? '加载出错' : 'Load error') + '</button>' +
+      '</div><button type="button" class="btn secondary full" data-go="system-preview">' + (zh ? '通知与小组件' : 'Notifications & widgets') + '</button></div>' +
       '<a class="app-link-design" href="spec.html">' + (zh ? '查看设计规范长页 →' : 'Open design system →') + '</a>';
     const firstSection = host.querySelector('.section-label');
     if (firstSection) host.insertBefore(block, firstSection);
@@ -156,6 +161,7 @@
   }
 
   function bootApp() {
+    removeHomeDemoControls();
     ensureDefaultZh();
     try { current = sessionStorage.getItem(SCREEN_KEY) || 'home'; } catch (e) { current = 'home'; }
     if (current === 'onboarding') current = 'home';
