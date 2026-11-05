@@ -85,7 +85,7 @@
 #screen-home .card{padding:16px}
 #screen-home-empty .empty-state{margin-top:0}
 
-</style><link rel="stylesheet" href="v1.2.css"><link rel="stylesheet" href="app-shell.css"></head><body class="nori-app">
+</style><link rel="stylesheet" href="v1.2.css?v=f9a4d89c0e"><link rel="stylesheet" href="app-shell.css?v=f9a4d89c0e"></head><body class="nori-app">
 <a class="skip-link" href="#main">跳至内容</a><header class="toolbar"><div class="toolbar-inner"><div class="wordmark"><span class="face" aria-hidden="true"></span>nori</div><div class="toolbar-note">记账，也可以很轻松<br>iOS 视觉提案 · 01</div><div class="palette-switch" role="group" aria-label="选择配色"><button data-palette="cream" aria-pressed="true">A Cream</button><button data-palette="apricot" aria-pressed="false">B Apricot</button><button data-palette="sage" aria-pressed="false">C Sage</button></div><div class="lang-switch" role="group" aria-label="Language / 语言"><button type="button" data-lang="system" aria-pressed="false">Auto</button><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></div><div class="mode-control"><span id="mode-label">深色模式</span><button class="switch" id="dark-toggle" role="switch" aria-checked="false" aria-labelledby="mode-label"><span class="switch-track"></span></button></div></div></header>
 <main id="main"><div class="intro"><div class="intro-top"><span class="eyebrow">日常有数，心里有底</span><span class="tag">本地优先 · 家庭 & 自由职业</span></div><div class="intro-copy"><h1>把日子，<br><span>记得轻一点。</span></h1><p>让 Nori 整理琐碎，让你保留决定权。<br>一套有温度、有分寸的 AI 记账体验。<br>三套暖色，十一个屏幕，同一种安心。</p></div></div>
 <section class="section" id="palettes"><div class="section-head"><div><p class="eyebrow">01 / 色彩方向</p><h2>3 套暖色方案</h2></div><p>从奶油纸张到杏桃与鼠尾草。<br>顶部切换，可预览全页及深浅色的同一套语义。</p></div><div class="comparison" id="comparison"></div></section>
@@ -389,4 +389,4 @@ document.addEventListener('input',e=>{if(e.target.id==='transaction-search')rend
 // Transaction submissions are owned by v1.2.js (manual and receipt).
 renderStates();setLang(lang,false);syncHomeSchemeSwitch();scalePhones();window.addEventListener('resize',scalePhones);
 window.NoriDesign={tokens:TOKENS,contrast,contrastPairs,get palette(){return activePalette},get mode(){return dark?'dark':'light'},get lang(){return lang},setLang,get homeScheme(){return homeScheme},setHomeScheme,get receiptState(){return receiptState},get records(){return records.map(r=>({...r}))}};
-</script><script>document.querySelectorAll("[data-nori]").forEach(f=>f.insertAdjacentHTML("afterbegin",nori(f.dataset.nori,56)));</script><script src="v1.2.js"></script><script src="app-shell.js"></script></body></html>
+</script><script>document.querySelectorAll("[data-nori]").forEach(f=>f.insertAdjacentHTML("afterbegin",nori(f.dataset.nori,56)));</script><script src="v1.2.js?v=f9a4d89c0e"></script><script src="app-shell.js?v=f9a4d89c0e"></script></body></html>

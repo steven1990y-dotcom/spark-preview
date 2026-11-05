@@ -29,8 +29,15 @@
     });
     const content = $('#screen-' + id + ' .phone-content');
     if (content) content.scrollTop = 0;
+    if (typeof syncTotals === 'function') {
+      try { syncTotals(); } catch (e) {}
+    }
+    if (typeof removeHomeDemoControls === 'function') {
+      try { removeHomeDemoControls(); } catch (e) {}
+    }
   }
 
+  window.showScreen = showScreen;
   // 覆盖画廊滚动导航 → 真换屏（赋值全局绑定，供 inline / v1.2 调用）
   go = function (id) { showScreen(id); };
 
@@ -107,14 +114,24 @@
       const saved = JSON.parse(localStorage.getItem(LEDGER_KEY) || 'null');
       const drafts = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
       if (Array.isArray(saved) && saved.length) {
-        NoriV12.state.saved.splice(0, NoriV12.state.saved.length, ...saved);
+        const seen = new Set();
+        const deduped = [];
+        for (const row of saved) {
+          const id = row && row.id;
+          if (id == null || seen.has(id)) continue;
+          seen.add(id);
+          deduped.push(row);
+        }
+        if (deduped.length) NoriV12.state.saved.splice(0, NoriV12.state.saved.length, ...deduped);
       }
       if (Array.isArray(drafts)) {
         NoriV12.state.drafts.splice(0, NoriV12.state.drafts.length, ...drafts);
       }
+      NoriV12.state.homeState = 'normal';
       restoredOnce = true;
       if (typeof syncTotals === 'function') syncTotals();
       if (typeof refreshDrafts === 'function') refreshDrafts();
+      removeHomeDemoControls();
     } catch (e) {}
   }
 
@@ -164,7 +181,7 @@
     removeHomeDemoControls();
     ensureDefaultZh();
     try { current = sessionStorage.getItem(SCREEN_KEY) || 'home'; } catch (e) { current = 'home'; }
-    if (current === 'onboarding') current = 'home';
+    if (current === 'onboarding' || current === 'filtered' || current === 'add-manual' || current === 'review') current = 'home';
     restoreLedgerIntoPatch();
     injectSettingsExtras();
     showScreen(current);
