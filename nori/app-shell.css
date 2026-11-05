@@ -1,0 +1,141 @@
+/* Nori App shell：单机可操作入口，隐藏设计规范长页 */
+html,body{height:100%;}
+body.nori-app{
+  margin:0;
+  min-height:100dvh;
+  background:#EDE6DA;
+  color:var(--ink,#2B2420);
+  overflow:hidden;
+  -webkit-text-size-adjust:100%;
+}
+body.nori-app[data-mode=dark]{background:#141210;}
+
+/* 藏掉画廊/规范页 chrome */
+body.nori-app .skip-link,
+body.nori-app .toolbar,
+body.nori-app .intro,
+body.nori-app #palettes,
+body.nori-app #spec,
+body.nori-app .footer,
+body.nori-app .toast:empty,
+body.nori-app #business > .section-head,
+body.nori-app #business > p.muted,
+body.nori-app .screen-caption,
+body.nori-app .home-scheme-switch,
+body.nori-app .layout-control{
+  display:none !important;
+}
+
+body.nori-app main#main{
+  max-width:none;
+  margin:0;
+  padding:0;
+  min-height:100dvh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+body.nori-app #business.section{
+  border:0;
+  padding:0;
+  margin:0;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100dvh;
+}
+
+/* 单壳：所有 screen 叠在同一手机位，只显示 .is-active */
+body.nori-app #screens.screens,
+body.nori-app #screens.screens.vertical{
+  display:block !important;
+  position:relative;
+  width:min(390px,100vw);
+  height:min(844px,100dvh);
+  margin:0 auto;
+  padding:0 !important;
+  overflow:hidden;
+  gap:0;
+  scroll-snap-type:none;
+  background:transparent;
+}
+body.nori-app #screens .screen-item{
+  position:absolute !important;
+  inset:0;
+  width:100% !important;
+  height:100% !important;
+  flex:none !important;
+  display:none;
+  margin:0;
+}
+body.nori-app #screens .screen-item.is-active{
+  display:block;
+  z-index:1;
+}
+body.nori-app .phone-holder{
+  width:100% !important;
+  height:100% !important;
+}
+body.nori-app .phone{
+  width:100% !important;
+  height:100% !important;
+  max-width:390px;
+  max-height:844px;
+  margin:0 auto;
+  transform:none !important;
+  border-radius:0;
+  border-width:0;
+  box-shadow:none;
+}
+/* 桌面：居中圆角手机框 */
+@media (min-width:500px){
+  body.nori-app{
+    overflow:auto;
+  }
+  body.nori-app #screens.screens{
+    width:390px;
+    height:844px;
+    border-radius:48px;
+    box-shadow:0 24px 64px rgba(43,36,32,.18);
+    overflow:hidden;
+  }
+  body.nori-app .phone{
+    border:6px solid var(--ink,#2B2420);
+    border-radius:48px;
+    box-shadow:var(--elevation-sheet,0 16px 48px rgba(43,36,32,.08));
+  }
+  body.nori-app[data-mode=dark] .phone{border-color:var(--hairline,#4B4136);}
+}
+/* 真机全屏贴边 */
+@media (max-width:499px){
+  body.nori-app #screens.screens{
+    width:100vw;
+    height:100dvh;
+  }
+  body.nori-app .phone{
+    border-radius:0;
+    border:0;
+  }
+  body.nori-app .tab-bar{padding-bottom:max(24px,env(safe-area-inset-bottom));}
+  body.nori-app .status-bar{padding-top:env(safe-area-inset-top);}
+}
+
+/* 设置页：配色/外观块 */
+body.nori-app .app-settings-block{margin-top:0;}
+body.nori-app .app-settings-block .palette-row,
+body.nori-app .app-settings-block .demo-row{
+  display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px;
+}
+body.nori-app .app-settings-block .palette-row button,
+body.nori-app .app-settings-block .demo-row button{
+  flex:1;min-width:88px;min-height:44px;padding:8px 10px;border-radius:999px;
+  border:1px solid var(--hairline);background:var(--surface);font-size:13px;font-weight:600;
+}
+body.nori-app .app-settings-block .palette-row button[aria-pressed=true],
+body.nori-app .app-settings-block .demo-row button[aria-pressed=true]{
+  border-color:var(--ink);background:var(--surface-soft);
+}
+body.nori-app .app-link-design{
+  display:block;text-align:center;font-size:12px;color:var(--muted);margin:16px 0 8px;text-decoration:underline;
+}
