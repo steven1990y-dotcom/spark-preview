@@ -1,0 +1,417 @@
+{
+  "defaultPalette": "cream",
+  "meta": {
+    "basedOn": [
+      "oura.md",
+      "claude.md"
+    ],
+    "version": "1.2.0",
+    "fontFamily": "-apple-system, \"SF Pro Text\", \"SF Pro Display\", system-ui, sans-serif",
+    "displayFontFamily": "ui-rounded, \"SF Pro Display\", -apple-system, system-ui, sans-serif",
+    "surface-card": "alias: surface",
+    "accentUsage": "仅插画和数据可视化，不承载文字",
+    "aiRule": "先出草稿 → 用户确认 → 再入库",
+    "i18n": {
+      "supported": [
+        "en",
+        "zh-Hans"
+      ],
+      "preferenceValues": [
+        "system",
+        "en",
+        "zh"
+      ],
+      "defaultRule": "Preference defaults to system. Resolve: if system language starts with zh use Chinese, else English. Persist preference to localStorage nori_lang as system|en|zh.",
+      "storageKey": "nori_lang",
+      "tabLabels": {
+        "en": "Home / Bills / + / Reports / Insights",
+        "zh": "首页 / 账单 / + / 报表 / 洞察"
+      },
+      "noLifetime": true,
+      "noThirdLanguage": true
+    },
+    "uiDefaultLanguage": "navigator.language → zh* = 中文, else English; remember via localStorage.nori_lang",
+    "noriVersion": "4-squircle",
+    "productLock": "MVP-LOCKED-v1.md",
+    "pricing": {
+      "monthly": 4.99,
+      "yearly": 39.99,
+      "earlyBirdFirstYear": 29.99,
+      "freeCloudAI": 20,
+      "plusCloudAI": 300,
+      "topUp": {
+        "uses": 100,
+        "price": 0.99
+      },
+      "familyMax": 5,
+      "lifetime": false
+    },
+    "changelog": "v1.2: 18 component patches, default Home A"
+  },
+  "palettes": {
+    "cream": {
+      "name": "A Cream",
+      "mood": "像摊开的家庭账本，温柔踏实，适合长久陪伴。",
+      "light": {
+        "canvas": "#FAF6EE",
+        "surface": "#FFFFFF",
+        "surface-soft": "#F3ECDF",
+        "primary": "#8A5A2B",
+        "on-primary": "#FFFFFF",
+        "accent": "#E7B65C",
+        "ink": "#2B2420",
+        "muted": "#6E625A",
+        "hairline": "#E8DFD1",
+        "success": "#3C6546",
+        "warning": "#80530F",
+        "danger": "#A1372F",
+        "info": "#536174"
+      },
+      "dark": {
+        "canvas": "#1C1916",
+        "surface": "#28231F",
+        "surface-soft": "#332C25",
+        "primary": "#E4B57F",
+        "on-primary": "#241B12",
+        "accent": "#CFA356",
+        "ink": "#F8F0E5",
+        "muted": "#C5B7A8",
+        "hairline": "#4B4136",
+        "success": "#A5CFAB",
+        "warning": "#E6C27A",
+        "danger": "#F2A89D",
+        "info": "#B5C6DD"
+      }
+    },
+    "apricot": {
+      "name": "B Apricot",
+      "mood": "像午后的杏桃阳光，亲近而有活力，轻松开启记账。",
+      "light": {
+        "canvas": "#FFF5EC",
+        "surface": "#FFFFFF",
+        "surface-soft": "#FDE6D3",
+        "primary": "#B4501F",
+        "on-primary": "#FFFFFF",
+        "accent": "#F4A261",
+        "ink": "#2E211B",
+        "muted": "#725F55",
+        "hairline": "#F1DCCB",
+        "success": "#3C6445",
+        "warning": "#805017",
+        "danger": "#A2352B",
+        "info": "#5F5D73"
+      },
+      "dark": {
+        "canvas": "#1E1916",
+        "surface": "#2C231E",
+        "surface-soft": "#382B22",
+        "primary": "#F2AE7E",
+        "on-primary": "#2B1B12",
+        "accent": "#DDA06B",
+        "ink": "#FFF0E4",
+        "muted": "#CDB5A4",
+        "hairline": "#524034",
+        "success": "#ACD0AC",
+        "warning": "#F1C58B",
+        "danger": "#F6AA9B",
+        "info": "#C8BEDD"
+      }
+    },
+    "sage": {
+      "name": "C Sage",
+      "mood": "像窗边的鼠尾草，安静有秩序，适合家庭与自由职业。",
+      "light": {
+        "canvas": "#F5F6EF",
+        "surface": "#FFFFFF",
+        "surface-soft": "#E6EBDC",
+        "primary": "#4E6B4A",
+        "on-primary": "#FFFFFF",
+        "accent": "#C9A66B",
+        "ink": "#1F2A22",
+        "muted": "#5D6A60",
+        "hairline": "#DCE2D2",
+        "success": "#3D6042",
+        "warning": "#755214",
+        "danger": "#9F3931",
+        "info": "#4C6265"
+      },
+      "dark": {
+        "canvas": "#1B1C17",
+        "surface": "#252921",
+        "surface-soft": "#30362B",
+        "primary": "#B2C7A1",
+        "on-primary": "#1C281A",
+        "accent": "#C5A46F",
+        "ink": "#EFF3E6",
+        "muted": "#BBC6B2",
+        "hairline": "#444C3C",
+        "success": "#ADCDA6",
+        "warning": "#E0C38B",
+        "danger": "#EFAEA0",
+        "info": "#B6CFCC"
+      }
+    }
+  },
+  "typography": {
+    "largeTitle": {
+      "size": 34,
+      "weight": 700,
+      "lineHeight": 1.18,
+      "fontFamily": "ui-rounded, \"SF Pro Display\", -apple-system, system-ui, sans-serif"
+    },
+    "title1": {
+      "size": 28,
+      "weight": 600,
+      "lineHeight": 1.22,
+      "fontFamily": "ui-rounded, \"SF Pro Display\", -apple-system, system-ui, sans-serif"
+    },
+    "title2": {
+      "size": 22,
+      "weight": 600,
+      "lineHeight": 1.3,
+      "fontFamily": "ui-rounded, \"SF Pro Display\", -apple-system, system-ui, sans-serif"
+    },
+    "headline": {
+      "size": 17,
+      "weight": 600,
+      "lineHeight": 1.4,
+      "fontFamily": "-apple-system, \"SF Pro Text\", \"SF Pro Display\", system-ui, sans-serif"
+    },
+    "body": {
+      "size": 17,
+      "weight": 400,
+      "lineHeight": 1.5,
+      "fontFamily": "-apple-system, \"SF Pro Text\", \"SF Pro Display\", system-ui, sans-serif"
+    },
+    "callout": {
+      "size": 16,
+      "weight": 400,
+      "lineHeight": 1.5,
+      "fontFamily": "-apple-system, \"SF Pro Text\", \"SF Pro Display\", system-ui, sans-serif"
+    },
+    "subhead": {
+      "size": 15,
+      "weight": 400,
+      "lineHeight": 1.45,
+      "fontFamily": "-apple-system, \"SF Pro Text\", \"SF Pro Display\", system-ui, sans-serif"
+    },
+    "footnote": {
+      "size": 13,
+      "weight": 400,
+      "lineHeight": 1.45,
+      "fontFamily": "-apple-system, \"SF Pro Text\", \"SF Pro Display\", system-ui, sans-serif"
+    },
+    "caption": {
+      "size": 12,
+      "weight": 400,
+      "lineHeight": 1.4,
+      "fontFamily": "-apple-system, \"SF Pro Text\", \"SF Pro Display\", system-ui, sans-serif"
+    }
+  },
+  "spacing": {
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "5": 20,
+    "6": 24,
+    "8": 32,
+    "10": 40,
+    "12": 48,
+    "16": 64,
+    "24": 96
+  },
+  "radius": {
+    "input": 14,
+    "card": 24,
+    "sheet": 32,
+    "pill": 9999
+  },
+  "elevation": {
+    "flat": "none",
+    "card": "0 4px 20px rgba(43,36,32,0.04)",
+    "sheet": "0 16px 48px rgba(43,36,32,0.08)",
+    "dark": "none"
+  },
+  "touchTarget": 44,
+  "nori": {
+    "version": "4",
+    "shape": "squircle",
+    "style": "grok-bot-family-flat",
+    "defaultBody": "#F3E3C3",
+    "defaultBodyName": "Cream Warm",
+    "defaultBodyRationale": "在画布 #FAF6EE 与白色卡片上对比清晰可读；官方 Cream Light #F1EFE9 过浅易融进背景；Cream Gold #E7B65C 过跳，仅作强调而非默认身体色。",
+    "eye": "#111111",
+    "ring": "#C4A574",
+    "notification": "#3b93f0",
+    "noDecorations": [
+      "blush",
+      "highlight",
+      "stroke",
+      "mouth",
+      "gradient-body"
+    ],
+    "assetsDir": "../nori-v4/final/",
+    "assets": {
+      "master": "../nori-v4/final/nori-squircle.svg",
+      "idle": "../nori-v4/final/nori-squircle-idle.svg",
+      "thinking": "../nori-v4/final/nori-squircle-thinking.svg",
+      "orbit": "../nori-v4/final/nori-squircle-orbit.svg",
+      "notification": "../nori-v4/final/nori-squircle-notification.svg",
+      "waiting": "../nori-v4/final/nori-squircle-waiting.svg",
+      "swirl": "../nori-v4/final/nori-squircle-swirl.svg",
+      "done": "../nori-v4/final/nori-squircle-done.svg"
+    },
+    "sceneMap": {
+      "onboarding": "idle",
+      "home.greeting": "idle",
+      "home.empty": "idle",
+      "settings.companion": "idle",
+      "review.ocr": "thinking",
+      "add.receipt": "thinking",
+      "add.sentence.drafting": "thinking",
+      "review.awaitConfirm": "waiting",
+      "permission.denied": "waiting",
+      "insights.nudge": "orbit",
+      "insights.intro": "idle",
+      "paywall.quota": "notification",
+      "quota.exhausted": "notification",
+      "review.saved": "done",
+      "decorativeWorking": "swirl"
+    },
+    "animations": {
+      "idle": {
+        "breathe": "3.2s ease-in-out infinite ±1.5%",
+        "blink": "3.8s / ~160ms",
+        "yaw": "6s ±1.2deg"
+      },
+      "thinking": {
+        "dots": "1.2s ease-in-out",
+        "phase": "0.18s",
+        "body": "hidden"
+      },
+      "orbit": {
+        "rings": "3s linear",
+        "bodyScale": 0.86,
+        "eyeTrack": "3s"
+      },
+      "notification": {
+        "badgePulse": "2s ±12%",
+        "color": "#3b93f0"
+      },
+      "waiting": {
+        "eyes": "flat",
+        "breathe": "4s"
+      },
+      "swirl": {
+        "rings": "2.4s / 2.8s reverse / 3.2s"
+      },
+      "done": {
+        "pop": "0.7s",
+        "burst": "1.8s x2"
+      },
+      "prefersReducedMotion": "freeze all; keep static expression"
+    },
+    "cssVariables": {
+      "--nori-body": "#F3E3C3",
+      "--nori-eye": "#111111",
+      "--nori-ring": "#C4A574",
+      "--nori-notif": "#3b93f0"
+    },
+    "darkAdaptation": {
+      "body": "#F3E3C3",
+      "eye": "#111111",
+      "ring": "#C4A574",
+      "note": "Body/eyes unchanged in dark; rings remain readable on canvas #1C1916"
+    },
+    "emotionsV5": {
+      "source": "../nori-v5/ (read-only)",
+      "files": [
+        "emotion-happy",
+        "emotion-surprise",
+        "emotion-shy",
+        "emotion-worry",
+        "emotion-proud",
+        "emotion-sleepy",
+        "emotion-annoyed",
+        "emotion-curious"
+      ],
+      "previewHelper": "noriEmotion(name,size)",
+      "sceneMap": {
+        "onboarding": "shy",
+        "home.greeting": "happy",
+        "home.empty": "shy",
+        "settings.companion": "happy",
+        "insights": "curious",
+        "quota.exhausted": "worry",
+        "permission.denied": "annoyed",
+        "streak.success": "happy",
+        "big.income": "surprise",
+        "over.budget": "worry",
+        "late.night": "sleepy",
+        "ocr.fail": "annoyed",
+        "savings.goal": "proud"
+      }
+    }
+  },
+  "componentsV12": {
+    "upcoming": {
+      "layout": "horizontal scroll snap",
+      "windowDays": 7,
+      "cardWidth": 158,
+      "radius": 24
+    },
+    "bulkConfirm": {
+      "requiresSecondConfirmation": true,
+      "sheetRadius": 32
+    },
+    "toast": {
+      "durationMs": 5000,
+      "undo": true,
+      "radius": 16
+    },
+    "categoryRule": {
+      "storage": "local",
+      "cloudCost": 0,
+      "choices": [
+        "yes",
+        "only-once"
+      ]
+    },
+    "duplicate": {
+      "choices": [
+        "merge",
+        "save-anyway",
+        "view"
+      ],
+      "cloudCost": 0
+    },
+    "refund": {
+      "type": "Refund",
+      "amount": "positive",
+      "report": "deduct from category net spending"
+    },
+    "quickActions": {
+      "collapseOnScroll": true,
+      "expandAfterIdleMs": 700
+    },
+    "home": {
+      "defaultScheme": "A",
+      "idealPace": "only with total monthly budget"
+    },
+    "states": [
+      "first-use",
+      "no-budget",
+      "no-spend-today",
+      "filter-no-results",
+      "offline",
+      "error"
+    ],
+    "widgets": [
+      "small-today",
+      "medium-today-month-sentence-deep-link",
+      "lock-add"
+    ],
+    "touchTarget": 44
+  }
+}
